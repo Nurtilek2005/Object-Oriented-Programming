@@ -1,18 +1,15 @@
 package me.nurtilek2005.homework_3.task2;
 
-import java.util.Arrays;
-import java.util.Random;
+import java.util.*;
 
 public class Program {
-
-    static Random random = new Random();
-
     /**
      * TODO: Переработать метод generateEmployee в рамках домашнего задания,
      *  метод должен генерировать рабочих (Employee) разных типов.
      */
-    static Employee generateEmployee(){
+    public Employee generateEmployee(){
         Employee employee = null;
+        Random random = new Random();
         int type = random.nextInt(2);
         String[] names = new String[] { "Анатолий", "Глеб", "Клим", "Мартин", "Лазарь", "Владлен", "Клим", "Панкратий", "Рубен", "Герман" };
         String[] surnames = new String[] { "Григорьев", "Фокин", "Шестаков", "Хохлов", "Шубин", "Бирюков", "Копылов", "Горбунов", "Лыткин", "Соколов" };
@@ -21,8 +18,8 @@ public class Program {
         int salary = random.nextInt(20000, 80000);
         switch (type) {
             case 0 -> {
-                Freelancer.Rank[] ranks = Freelancer.Rank.values();
-                Freelancer.Rank rank = ranks[random.nextInt(ranks.length)];
+                Rank[] ranks = Rank.values();
+                Rank rank = ranks[random.nextInt(ranks.length)];
                 employee = new Freelancer(randFirstName, randSurname, salary, rank);
             }
             case 1 -> employee = new Worker(randFirstName, randSurname, salary);
@@ -30,20 +27,53 @@ public class Program {
         return employee;
     }
 
-    /**
-     * TODO: Придумать новые состояния для наших сотрудников
-     *   Придумать несколько Comparator'ов для сортировки сотрудников
-     *   по фамилии + имени или по возрасту + уровню зп.
-     */
+    public List<Employee> generateEmployees() {
+        return this.generateEmployees(10);
+    }
+
+    public List<Employee> generateEmployees(int count) {
+        List<Employee> employeeList = new ArrayList<>();
+        for (int i = 0; i < count; i++) {
+            employeeList.add(this.generateEmployee());
+        }
+        return employeeList;
+    }
+
+    public List<Employee> sortEmployeesBySalary(List<Employee> employeeList) {
+        int size = employeeList.size();
+        Comparator<Employee> comparator = new SalaryComparator();
+        List<Employee> sortedList = new ArrayList<>(employeeList);
+        for (int i = 0; i < size; i++) {
+            Employee employee1 = employeeList.get(i);
+            for (int j = i + 1; j < size; j++) {
+                Employee employee2 = employeeList.get(j);
+                int winner = comparator.compare(employee2, employee1);
+                System.out.println(winner);
+                if (winner > 0) {
+                    sortedList.set(i, employee2);
+                    sortedList.set(j, employee1);
+                }
+            }
+        }
+        return sortedList;
+    }
+
+    public void run() {
+//        List<Employee> employeeList = this.generateEmployees();
+        List<Employee> employeeList = new ArrayList<>();
+        employeeList.add(new Worker("Андрей", "Андреевич", 7));
+        employeeList.add(new Worker("Андрей", "Андреевич", 6));
+        employeeList.add(new Worker("Андрей", "Андреевич", 5));
+        employeeList.add(new Worker("Андрей", "Андреевич", 4));
+        employeeList.add(new Worker("Андрей", "Андреевич", 3));
+        employeeList.add(new Worker("Андрей", "Андреевич", 2));
+        employeeList.add(new Worker("Андрей", "Андреевич", 1));
+        System.out.println(this.sortEmployeesBySalary(employeeList));
+        System.out.println(employeeList);
+    }
+
     public static void main(String[] args) {
-        Employee[] employees = new Employee[10];
-        for (int i = 0; i < employees.length; i++)
-        {
-            employees[i] = generateEmployee();
-        }
-        Arrays.sort(employees);
-        for (Employee employee: employees) {
-            System.out.println(employee);
-        }
+        Program program = new Program();
+        program.run();
     }
 }

@@ -5,12 +5,6 @@ package me.nurtilek2005.homework_3.task2;
  */
 public class Freelancer extends Employee {
     private Rank rank;
-    public enum Rank {
-        Junior,
-        Middle,
-        Senior,
-        TeamLead
-    }
 
     public Freelancer(String name, String surname, double salary) {
         this(name, surname, salary, Rank.Junior);
@@ -19,6 +13,10 @@ public class Freelancer extends Employee {
     public Freelancer(String name, String surname, double salary, Rank rank) {
         super(name, surname, salary);
         this.rank = rank;
+    }
+
+    public Rank getRank() {
+        return this.rank;
     }
 
     public void promote() {
@@ -31,16 +29,12 @@ public class Freelancer extends Employee {
 
     @Override
     public double calculateSalary() {
-        return 0;
+        return this.salary;
     }
 
-    public Rank getRank() {
-        return this.rank;
-    }
-
-    @Override
-    public String toString() {
-        return String.format("%s %s; %s; Среднемесячная заработная плата (фиксированная месячная оплата): %.2f (руб.)",
-                surname, name, rank, calculateSalary());
-    }
+//    @Override
+//    public String toString() {
+//        return String.format("%s %s; %s; Среднемесячная заработная плата (фиксированная месячная оплата): %.2f (руб.)",
+//                surname, name, rank, calculateSalary());
+//    }
 }

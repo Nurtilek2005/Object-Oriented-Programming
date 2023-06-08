@@ -10,9 +10,9 @@ public class Worker extends Employee {
         return salary;
     }
 
-    @Override
-    public String toString() {
-        return String.format("%s %s; Рабочий; Среднемесячная заработная плата (фиксированная месячная оплата): %.2f (руб.)",
-                surname, name, calculateSalary());
-    }
+//    @Override
+//    public String toString() {
+//        return String.format("%s %s; Рабочий; Среднемесячная заработная плата (фиксированная месячная оплата): %.2f (руб.)",
+//                surname, name, calculateSalary());
+//    }
 }
