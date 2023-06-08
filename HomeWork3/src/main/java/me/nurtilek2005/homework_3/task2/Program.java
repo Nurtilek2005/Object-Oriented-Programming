@@ -16,13 +16,14 @@ public class Program {
         String randSurname = surnames[random.nextInt(surnames.length)];
         String randFirstName = names[random.nextInt(names.length)];
         int salary = random.nextInt(20000, 80000);
+        int experience = random.nextInt(0, 10);
         switch (type) {
             case 0 -> {
                 Rank[] ranks = Rank.values();
                 Rank rank = ranks[random.nextInt(ranks.length)];
-                employee = new Freelancer(randFirstName, randSurname, salary, rank);
+                employee = new Freelancer(randFirstName, randSurname, salary, experience, rank);
             }
-            case 1 -> employee = new Worker(randFirstName, randSurname, salary);
+            case 1 -> employee = new Worker(randFirstName, randSurname, salary, experience);
         }
         return employee;
     }
@@ -40,36 +41,23 @@ public class Program {
     }
 
     public List<Employee> sortEmployeesBySalary(List<Employee> employeeList) {
+        return this.sortEmployees(employeeList, new SalaryComparator());
+    }
+
+    public List<Employee> sortEmployeesByExperience(List<Employee> employeeList) {
+        return this.sortEmployees(employeeList, new ExperienceComparator());
+    }
+
+    private List<Employee> sortEmployees(List<Employee> employeeList, Comparator<Employee> comparator) {
         int size = employeeList.size();
-        Comparator<Employee> comparator = new SalaryComparator();
         List<Employee> sortedList = new ArrayList<>(employeeList);
-        for (int i = 0; i < size; i++) {
-            Employee employee1 = employeeList.get(i);
-            for (int j = i + 1; j < size; j++) {
-                Employee employee2 = employeeList.get(j);
-                int winner = comparator.compare(employee2, employee1);
-                System.out.println(winner);
-                if (winner > 0) {
-                    sortedList.set(i, employee2);
-                    sortedList.set(j, employee1);
-                }
-            }
-        }
+        sortedList.sort(comparator.reversed());
         return sortedList;
     }
 
     public void run() {
-//        List<Employee> employeeList = this.generateEmployees();
-        List<Employee> employeeList = new ArrayList<>();
-        employeeList.add(new Worker("Андрей", "Андреевич", 7));
-        employeeList.add(new Worker("Андрей", "Андреевич", 6));
-        employeeList.add(new Worker("Андрей", "Андреевич", 5));
-        employeeList.add(new Worker("Андрей", "Андреевич", 4));
-        employeeList.add(new Worker("Андрей", "Андреевич", 3));
-        employeeList.add(new Worker("Андрей", "Андреевич", 2));
-        employeeList.add(new Worker("Андрей", "Андреевич", 1));
-        System.out.println(this.sortEmployeesBySalary(employeeList));
-        System.out.println(employeeList);
+        List<Employee> employeeList = this.generateEmployees();
+        System.out.println(this.sortEmployeesByExperience(employeeList));
     }
 
     public static void main(String[] args) {

@@ -7,11 +7,15 @@ public class Freelancer extends Employee {
     private Rank rank;
 
     public Freelancer(String name, String surname, double salary) {
-        this(name, surname, salary, Rank.Junior);
+        this(name, surname, salary, 0, Rank.Junior);
     }
 
-    public Freelancer(String name, String surname, double salary, Rank rank) {
-        super(name, surname, salary);
+    public Freelancer(String name, String surname, double salary, int experience) {
+        this(name, surname, salary, experience, Rank.Junior);
+    }
+
+    public Freelancer(String name, String surname, double salary, int experience, Rank rank) {
+        super(name, surname, salary, experience);
         this.rank = rank;
     }
 
@@ -32,9 +36,9 @@ public class Freelancer extends Employee {
         return this.salary;
     }
 
-//    @Override
-//    public String toString() {
-//        return String.format("%s %s; %s; Среднемесячная заработная плата (фиксированная месячная оплата): %.2f (руб.)",
-//                surname, name, rank, calculateSalary());
-//    }
+    @Override
+    public String toString() {
+        return String.format("%s %s; %s; Среднемесячная заработная плата (фиксированная месячная оплата): %.2f (руб.); Стажа - %d",
+                surname, name, rank, calculateSalary(), getExperience());
+    }
 }
