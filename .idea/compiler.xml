@@ -8,10 +8,16 @@
         <outputRelativeToContentRoot value="true" />
         <module name="Seminar3" />
         <module name="HomeWork1" />
+        <module name="Seminar4" />
         <module name="HomeWork2" />
         <module name="Seminar2" />
-        <module name="HomeWork4" />
+        <module name="HomeWork5" />
+        <module name="Seminar5" />
       </profile>
     </annotationProcessing>
+    <bytecodeTargetLevel>
+      <module name="Seminar5 (1)" target="20" />
+      <module name="Seminar5 (2)" target="20" />
+    </bytecodeTargetLevel>
   </component>
 </project>
