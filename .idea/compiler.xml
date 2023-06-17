@@ -11,8 +11,12 @@
         <module name="Seminar4" />
         <module name="HomeWork2" />
         <module name="Seminar2" />
+        <module name="Seminar7" />
         <module name="HomeWork5" />
         <module name="Seminar5" />
+        <module name="HomeWork6" />
+        <module name="Seminar6" />
+        <module name="HomeWork7" />
       </profile>
     </annotationProcessing>
     <bytecodeTargetLevel>
