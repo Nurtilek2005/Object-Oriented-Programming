@@ -2,69 +2,69 @@ package me.nurtilek2005.homework6.srp2;
 
 import java.io.FileWriter;
 import java.io.IOException;
-import java.util.Scanner;
+import java.util.Objects;
 
 public class Order {
-
-    private Scanner scanner = new Scanner(System.in);
-    private String clientName;
+    private int id;
+    private String name;
     private String product;
-    private int qnt;
+    private int count;
     private int price;
 
-    public String getClientName() {
-        return clientName;
-    }
-
-    public String getProduct() {
-        return product;
-    }
-
-    public int getQnt() {
-        return qnt;
-    }
-
-    public int getPrice() {
-        return price;
-    }
-
-    public Order(){
-
-    }
-
-    public Order(String clientName, String product, int qnt, int price) {
-        this.clientName = clientName;
+    public Order(String name, String product, int count, int price) {
+        this.id = OrderCounter.getInstance().incrementValue();
+        this.name = name;
         this.product = product;
-        this.qnt = qnt;
+        this.count = count;
         this.price = price;
     }
 
-    public void inputFromConsole(){
-        clientName = prompt("Имя клиента: ");
-        product = prompt("Продукт: ");
-        qnt = Integer.parseInt(prompt("Кол-во: "));
-        price = Integer.parseInt(prompt("Цена: "));
+    public String toJson() {
+        StringBuilder json = new StringBuilder();
+        json.append("ID клиента: " + this.id + "\n");
+        json.append("Имя клиента: " + this.name + "\n");
+        json.append("Продукт: " + this.product + "\n");
+        json.append("Кол-во: " + this.count + "\n");
+        json.append("Цена: " + this.price);
+        return json.toString();
     }
 
-    private String prompt(String message){
-        System.out.println(message);
-        return scanner.nextLine();
+    @Override
+    public String toString() {
+        StringBuilder result = new StringBuilder();
+        result.append("ID клиента: " + this.id + "\n");
+        result.append("Имя клиента: " + this.name + "\n");
+        result.append("Продукт: " + this.product + "\n");
+        result.append("Кол-во: " + this.count + "\n");
+        result.append("Цена: " + this.price);
+        return result.toString();
     }
 
-    public void saveToJson() {
-        String fileName = "order.json";
-        try (FileWriter writer = new FileWriter(fileName, false)) {
-            writer.write("{\n");
-            writer.write("\"clientName\":\""+ clientName + "\",\n");
-            writer.write("\"product\":\""+product+"\",\n");
-            writer.write("\"qnt\":"+qnt+",\n");
-            writer.write("\"price\":"+price+"\n");
-            writer.write("}\n");
-            writer.flush();
-        } catch (IOException ex) {
-            System.out.println(ex.getMessage());
+    @Override
+    public boolean equals(Object obj) {
+        if (obj instanceof Order order) {
+            return order.getId() == this.id;
         }
+        return false;
     }
 
+    public int getId() {
+        return this.id;
+    }
 
+    public String getName() {
+        return this.name;
+    }
+
+    public String getProduct() {
+        return this.product;
+    }
+
+    public int getCount() {
+        return this.count;
+    }
+
+    public int getPrice() {
+        return this.price;
+    }
 }
