@@ -17,6 +17,7 @@
         <module name="HomeWork6" />
         <module name="Seminar6" />
         <module name="HomeWork7" />
+        <module name="json" />
       </profile>
     </annotationProcessing>
     <bytecodeTargetLevel>
