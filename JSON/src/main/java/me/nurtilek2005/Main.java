@@ -5,6 +5,7 @@ import java.util.Map;
 
 public class Main {
     public static void main(String[] args) {
+        JsonDecoder decoder = new JsonDecoder();
         Map<String, Object> data1 = new LinkedHashMap<>();
         for (int i = 1; i <= 3; i++) {
             Map<String, Object> data2 = new LinkedHashMap<>();
@@ -18,6 +19,6 @@ public class Main {
             data1.put("i - " + i, data2);
         }
         Json json = new Json(data1);
-        System.out.println(json);
+        decoder.decode(json.toString());
     }
 }
