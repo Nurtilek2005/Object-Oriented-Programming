@@ -14,7 +14,7 @@ public class JsonEncoder {
     private String encode(Map<String, Object> data, int indent, int left, int index) {
         StringBuilder result = new StringBuilder();
         result.append("{");
-        for (Map.Entry<String, Object> entry: data.entrySet()) {
+        for (Map.Entry<String, Object> entry : data.entrySet()) {
             if (entry.getValue() instanceof Map) {
                 Map<String, Object> entryData = (Map<String, Object>) entry.getValue();
                 String encoded = this.encode(entryData, indent, left + 1, 1);

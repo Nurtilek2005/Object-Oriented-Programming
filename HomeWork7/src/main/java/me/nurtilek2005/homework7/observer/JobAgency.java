@@ -4,9 +4,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class JobAgency implements Publisher {
-
     List<Observer> observers = new ArrayList<>();
-
 
     @Override
     public void registerObserver(Observer observer) {
@@ -19,9 +17,9 @@ public class JobAgency implements Publisher {
     }
 
     @Override
-    public void sendOffer(String companyName, double salary) {
-        for (Observer observer: observers) {
-            observer.receiveOffer(companyName, salary);
+    public void sendOffer(String companyName, Vacancy vacancy) {
+        for (Observer observer : observers) {
+            observer.receiveOffer(companyName, vacancy);
         }
     }
 }

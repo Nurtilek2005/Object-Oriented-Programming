@@ -1,16 +1,15 @@
 package me.nurtilek2005.homework7.observer;
 
 public class Program {
-
     /**
      * TODO: 1. Доработать приложение, поработать с шаблоном проектирования Observer,
      *  добавить свой собственный тип/типы соискателя.
      *  2**. Добавить новую сущность "Вакансия", компания должна рассылать вакансии.
      *  3**. Предусмотреть тип вакансии (enum)
+     *
      * @param args
      */
     public static void main(String[] args) {
-
         JobAgency jobAgency = new JobAgency();
         Company geekBrains = new Company("GeekBrains", 70000, jobAgency);
         Company google = new Company("Google", 100000, jobAgency);
@@ -24,11 +23,10 @@ public class Program {
         jobAgency.registerObserver(petrov);
         jobAgency.registerObserver(sidorov);
 
-        for (int i = 0; i < 5; i++){
+        for (int i = 0; i < 5; i++) {
             geekBrains.needEmployee();
             google.needEmployee();
             yandex.needEmployee();
         }
     }
-
 }

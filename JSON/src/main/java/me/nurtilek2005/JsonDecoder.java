@@ -1,8 +1,6 @@
 package me.nurtilek2005;
 
-import java.util.LinkedHashMap;
-import java.util.Map;
-import java.util.Objects;
+import java.util.*;
 
 public class JsonDecoder {
     public Map<String, Object> decode(String json) {
@@ -10,23 +8,32 @@ public class JsonDecoder {
     }
 
     public Map<String, Object> decode(String json, int indent) {
-        return this.decode(json, indent, 1, 1);
+        return this.decode(json, indent, new LinkedHashMap<>());
     }
 
-    private Map<String, Object> decode(String json, int indent, int left, int index) {
+    private Map<String, Object> decode(String json, int indent, Map<String, Object> data) {
         json = json.replace("\n", "");
-        json = json.replace("    ", "");
-        Map<String, Object> data = new LinkedHashMap<>();
-        for (String part: json.split("\\{")) {
-            if (part.strip().length() < 1) continue;
-            if (part.contains("{")) {
-                return this.decode(part, indent, 1, 1);
+        json = json.replace(" ".repeat(indent), "");
+        String[] jsonParts = json.split("\\{");
+        for (int i = 0; i < jsonParts.length; i++) {
+            String jsonPart = jsonParts[i];
+            if (jsonPart.strip().length() < 1) continue;
+            String[] set = jsonPart.split(",");
+            String key = set[0];
+            key = key.replace("\"", "");
+            key = key.replace("{", "");
+            key = key.replace("}", "");
+            System.out.println(jsonPart);
+            if (set.length == 1) {
+                System.out.println("| " + key);
+                data.put(key, this.decode(jsonPart));
+                continue;
             }
-            for (String entry: json.split(",")) {
-                if (part.strip().length() < 1) continue;
-                System.out.println(index + ") " + entry);
-            }
-            index++;
+            String value = set[1];
+            value = value.replace("\"", "");
+            value = value.replace("{", "");
+            value = value.replace("}", "");
+            data.put(key, value);
         }
         return data;
     }
