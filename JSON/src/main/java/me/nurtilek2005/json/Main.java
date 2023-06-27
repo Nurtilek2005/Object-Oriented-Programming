@@ -1,4 +1,4 @@
-package me.nurtilek2005;
+package me.nurtilek2005.json;
 
 import java.util.LinkedHashMap;
 import java.util.Map;
@@ -15,7 +15,5 @@ public class Main {
             data1.put("i" + i, data2);
         }
         Json json = new Json(data1);
-        System.out.println(data1);
-        System.out.println(decoder.decode(json.toString()));
     }
 }

@@ -1,6 +1,7 @@
-package me.nurtilek2005;
+package me.nurtilek2005.json;
 
-import java.util.*;
+import java.util.LinkedHashMap;
+import java.util.Map;
 
 public class JsonDecoder {
     public Map<String, Object> decode(String json) {
@@ -12,6 +13,11 @@ public class JsonDecoder {
     }
 
     private Map<String, Object> decode(String json, int indent, Map<String, Object> data) {
+        /*
+         *  FIXME: Исправить работу декодирования JSON строки.
+         *  Есть подозрение на рекурсию.
+         *  Я не смог найти ошибку.
+         */
         json = json.replace("\n", "");
         json = json.replace(" ".repeat(indent), "");
         String[] jsonParts = json.split("\\{");

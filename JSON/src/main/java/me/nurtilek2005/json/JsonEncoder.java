@@ -1,4 +1,4 @@
-package me.nurtilek2005;
+package me.nurtilek2005.json;
 
 import java.util.Map;
 
@@ -29,7 +29,14 @@ public class JsonEncoder {
             }
             result.append("\n").append(" ".repeat(indent * left));
             result.append("\"" + entry.getKey() + "\": ");
-            result.append(entry.getValue().toString());
+            try {
+                Integer.parseInt(entry.getValue().toString());
+                Double.parseDouble(entry.getValue().toString());
+                Float.parseFloat(entry.getValue().toString());
+                result.append(entry.getValue().toString());
+            } catch (NumberFormatException exception) {
+                result.append("\"" + entry.getValue().toString() + "\"");
+            }
             if (data.size() != index) {
                 result.append(",");
             }

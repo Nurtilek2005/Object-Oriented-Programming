@@ -1,8 +1,6 @@
 package me.nurtilek2005.homework6.srp2;
 
-import java.io.FileWriter;
-import java.io.IOException;
-import java.util.Objects;
+import me.nurtilek2005.json.Json;
 
 public class Order {
     private int id;
@@ -19,20 +17,20 @@ public class Order {
         this.price = price;
     }
 
-    public String toJson() {
-        StringBuilder json = new StringBuilder();
-        json.append("ID клиента: " + this.id + "\n");
-        json.append("Имя клиента: " + this.name + "\n");
-        json.append("Продукт: " + this.product + "\n");
-        json.append("Кол-во: " + this.count + "\n");
-        json.append("Цена: " + this.price);
-        return json.toString();
+    public Json toJson() {
+        Json json = new Json();
+        json.put("ID заказа", this.id);
+        json.put("Имя клиента", this.name);
+        json.put("Продукт", this.product);
+        json.put("Кол-во", this.count);
+        json.put("Цена", this.price);
+        return json;
     }
 
     @Override
     public String toString() {
         StringBuilder result = new StringBuilder();
-        result.append("ID клиента: " + this.id + "\n");
+        result.append("ID заказа: " + this.id + "\n");
         result.append("Имя клиента: " + this.name + "\n");
         result.append("Продукт: " + this.product + "\n");
         result.append("Кол-во: " + this.count + "\n");

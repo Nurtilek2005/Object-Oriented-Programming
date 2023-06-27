@@ -5,8 +5,6 @@ import me.nurtilek2005.homework6.srp2.OrderList;
 import me.nurtilek2005.homework6.srp2.provider.IProvider;
 import me.nurtilek2005.homework6.srp2.provider.JsonProvider;
 
-import java.util.List;
-
 public class OrderManager {
     private final OrderList orderList = new OrderList();
     private IProvider provider;
@@ -23,7 +21,7 @@ public class OrderManager {
         this.orderList.add(order);
     }
 
-    public List<Order> getOrderList() {
+    public OrderList getOrderList() {
         return this.orderList;
     }
 
