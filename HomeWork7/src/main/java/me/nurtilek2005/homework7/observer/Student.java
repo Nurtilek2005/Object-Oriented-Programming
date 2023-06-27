@@ -23,4 +23,9 @@ public class Student implements Observer {
                     name, minSalary, companyName, vacancy.getSalary());
         }
     }
+
+    @Override
+    public String getName() {
+        return this.name;
+    }
 }
