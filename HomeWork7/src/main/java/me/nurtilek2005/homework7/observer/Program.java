@@ -18,7 +18,7 @@ public class Program {
         Master ivanov = new Master("Ivanov");
         Master petrov = new Master("Petrov");
         Student sidorov = new Student("Sidorov");
-        Programmer karpov = new Programmer("Karpov", ProgrammerRank.TEAM_LEAD);
+        Programmer karpov = new Programmer("Karpov", ProgrammerRank.JUNIOR);
 
         jobAgency.registerObserver(ivanov);
         jobAgency.registerObserver(petrov);
@@ -29,10 +29,10 @@ public class Program {
 
         yandex.needEmployee();
 
-//        for (int i = 0; i < 5; i++) {
-//            geekBrains.needEmployee();
-//            google.needEmployee();
-//            yandex.needEmployee();
-//        }
+        for (int i = 0; i < 5; i++) {
+            geekBrains.needEmployee();
+            google.needEmployee();
+            yandex.needEmployee();
+        }
     }
 }

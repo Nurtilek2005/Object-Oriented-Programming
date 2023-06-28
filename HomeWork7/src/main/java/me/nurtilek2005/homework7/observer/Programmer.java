@@ -1,5 +1,6 @@
 package me.nurtilek2005.homework7.observer;
 
+import java.util.Arrays;
 import java.util.Random;
 
 public class Programmer implements Observer {
@@ -12,14 +13,11 @@ public class Programmer implements Observer {
     }
 
     public Programmer(String name, ProgrammerRank rank) {
-        Random random = new Random();
-        switch (rank) {
-            case JUNIOR -> minSalary = random.nextDouble(20000, 50000);
-            case MIDDLE -> minSalary = random.nextDouble(70000, 100000);
-            case SENIOR -> minSalary = random.nextDouble(12000, 200000);
-            case TEAM_LEAD -> minSalary = random.nextDouble(200000, 300000);
-        }
         this.name = name;
+        this.rank = rank;
+        Random random = new Random();
+        double randomSalary = random.nextDouble(25000, 50000);
+        this.minSalary = randomSalary * (rank.ordinal() + 1);
     }
 
     @Override
@@ -27,6 +25,7 @@ public class Programmer implements Observer {
         Company company = vacancy.getCompany();
         StringBuilder message = new StringBuilder();
         message.append("Программист %s ".formatted(name));
+        message.append("| %s ".formatted(this.rank));
         message.append("(%f) >>> ".formatted(minSalary));
         if (minSalary <= vacancy.getSalary()) {
             minSalary = vacancy.getSalary();
@@ -36,6 +35,22 @@ public class Programmer implements Observer {
         }
         message.append("[%s - ".formatted(company.getName()));
         message.append("%f]".formatted(vacancy.getSalary()));
+        System.out.println(message);
+    }
+
+    public void promote() {
+        StringBuilder message = new StringBuilder();
+        ProgrammerRank[] ranks = ProgrammerRank.values();
+        message.append("Программист %s ".formatted(name));
+        message.append("| %s ".formatted(this.rank.name()));
+        try {
+            this.rank = ranks[this.rank.ordinal() + 1];
+            message.append("повышен до %s ".formatted(this.rank.name()));
+        } catch (IndexOutOfBoundsException exception) {
+            message.append("уже самого высокого звания!");
+        }
+        Random random = new Random();
+        this.minSalary += this.minSalary * (rank.ordinal() * 0.5);
         System.out.println(message);
     }
 
