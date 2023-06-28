@@ -13,19 +13,29 @@ public class Master implements Observer {
     }
 
     @Override
-    public void receiveOffer(String companyName, Vacancy vacancy) {
+    public void receiveOffer(Vacancy vacancy) {
+        Company company = vacancy.getCompany();
+        StringBuilder message = new StringBuilder();
+        message.append("Рабочий %s ".formatted(name));
+        message.append("(%f) >>> ".formatted(minSalary));
         if (minSalary <= vacancy.getSalary()) {
-            System.out.printf("Рабочий %s (%f) >>> Мне нужна эта работа! [%s - %f]\n",
-                    name, minSalary, companyName, vacancy.getSalary());
             minSalary = vacancy.getSalary();
+            message.append("Мне нужна эта работа!").append(" ");
         } else {
-            System.out.printf("Рабочий %s >>> Я найду работу получше (%f)! [%s - %f]\n",
-                    name, minSalary, companyName, vacancy.getSalary());
+            message.append("Я найду работу получше").append(" ");
         }
+        message.append("[%s - ".formatted(company.getName()));
+        message.append("%f]".formatted(vacancy.getSalary()));
+        System.out.println(message);
     }
 
     @Override
     public String getName() {
         return this.name;
+    }
+
+    @Override
+    public double getMinSalary() {
+        return this.minSalary;
     }
 }

@@ -18,8 +18,7 @@ public interface Publisher {
     /**
      * Компания отправляет новую вакансию
      *
-     * @param companyName Имя компании
-     * @param vacancy     Вакансия
+     * @param vacancy Вакансия
      */
-    void sendOffer(String companyName, Vacancy vacancy);
+    void sendOffer(Vacancy vacancy);
 }

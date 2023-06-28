@@ -17,9 +17,9 @@ public class JobAgency implements Publisher {
     }
 
     @Override
-    public void sendOffer(String companyName, Vacancy vacancy) {
+    public void sendOffer(Vacancy vacancy) {
         for (Observer observer : observers) {
-            observer.receiveOffer(companyName, vacancy);
+            observer.receiveOffer(vacancy);
         }
     }
 }
