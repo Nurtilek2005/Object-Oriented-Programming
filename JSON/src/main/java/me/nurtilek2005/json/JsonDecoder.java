@@ -2,45 +2,70 @@ package me.nurtilek2005.json;
 
 import java.util.LinkedHashMap;
 import java.util.Map;
+import java.util.Stack;
 
 public class JsonDecoder {
     public Map<String, Object> decode(String json) {
-        return this.decode(json, 4);
+        return decode(json, 4);
     }
 
     public Map<String, Object> decode(String json, int indent) {
-        return this.decode(json, indent, new LinkedHashMap<>());
+        return decode(json, indent, new LinkedHashMap<>());
     }
 
     private Map<String, Object> decode(String json, int indent, Map<String, Object> data) {
-        /*
-         *  FIXME: Исправить работу декодирования JSON строки.
-         *  Есть подозрение на рекурсию.
-         *  Я не смог найти ошибку.
-         */
-        json = json.replace("\n", "");
-        json = json.replace(" ".repeat(indent), "");
-        String[] jsonParts = json.split("\\{");
-        for (int i = 0; i < jsonParts.length; i++) {
-            String jsonPart = jsonParts[i];
-            if (jsonPart.strip().length() < 1) continue;
-            String[] set = jsonPart.split(",");
-            String key = set[0];
-            key = key.replace("\"", "");
-            key = key.replace("{", "");
-            key = key.replace("}", "");
-            System.out.println(jsonPart);
-            if (set.length == 1) {
-                System.out.println("| " + key);
-                data.put(key, this.decode(jsonPart));
-                continue;
+        Stack<Character> stack = new Stack<>();
+        StringBuilder keyBuilder = new StringBuilder();
+        StringBuilder valueBuilder = new StringBuilder();
+        String currentKey = null;
+
+        for (char c : json.toCharArray()) {
+            if (c == '{' || c == '[') {
+                stack.push(c);
+            } else if (c == '}' || c == ']') {
+                stack.pop();
+            } else if (c == ':' && stack.isEmpty()) {
+                currentKey = keyBuilder.toString().trim();
+                keyBuilder.setLength(0);
+            } else if (c == ',' && stack.isEmpty()) {
+                if (currentKey != null) {
+                    Object value = parseValue(valueBuilder.toString().trim());
+                    data.put(currentKey, value);
+                    currentKey = null;
+                    valueBuilder.setLength(0);
+                }
+            } else {
+                if (currentKey != null) {
+                    valueBuilder.append(c);
+                } else {
+                    keyBuilder.append(c);
+                }
             }
-            String value = set[1];
-            value = value.replace("\"", "");
-            value = value.replace("{", "");
-            value = value.replace("}", "");
-            data.put(key, value);
         }
+
+        if (currentKey != null) {
+            Object value = parseValue(valueBuilder.toString().trim());
+            data.put(currentKey, value);
+        }
+
         return data;
+    }
+
+    private Object parseValue(String value) {
+        if (value.startsWith("\"") && value.endsWith("\"")) {
+            return value.substring(1, value.length() - 1);
+        } else if (value.equalsIgnoreCase("true") || value.equalsIgnoreCase("false")) {
+            return Boolean.parseBoolean(value);
+        } else {
+            try {
+                if (value.contains(".")) {
+                    return Double.parseDouble(value);
+                } else {
+                    return Long.parseLong(value);
+                }
+            } catch (NumberFormatException e) {
+                return value;
+            }
+        }
     }
 }
