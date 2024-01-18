@@ -1,71 +1,65 @@
 package me.nurtilek2005.json;
 
-import java.util.LinkedHashMap;
+import com.fasterxml.jackson.databind.JsonNode;
+import com.fasterxml.jackson.databind.ObjectMapper;
+
+import java.io.IOException;
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
-import java.util.Stack;
 
 public class JsonDecoder {
-    public Map<String, Object> decode(String json) {
+
+    private final ObjectMapper objectMapper;
+
+    public JsonDecoder() {
+        this.objectMapper = new ObjectMapper();
+    }
+
+    public Object decode(String json) {
         return decode(json, 4);
     }
 
-    public Map<String, Object> decode(String json, int indent) {
-        return decode(json, indent, new LinkedHashMap<>());
+    public Object decode(String json, int indent) {
+        try {
+            JsonNode jsonNode = objectMapper.readTree(json);
+            return convertJsonNode(jsonNode, indent);
+        } catch (IOException e) {
+            System.out.println(e.getMessage());
+            return null;
+        }
     }
 
-    private Map<String, Object> decode(String json, int indent, Map<String, Object> data) {
-        Stack<Character> stack = new Stack<>();
-        StringBuilder keyBuilder = new StringBuilder();
-        StringBuilder valueBuilder = new StringBuilder();
-        String currentKey = null;
-
-        for (char c : json.toCharArray()) {
-            if (c == '{' || c == '[') {
-                stack.push(c);
-            } else if (c == '}' || c == ']') {
-                stack.pop();
-            } else if (c == ':' && stack.isEmpty()) {
-                currentKey = keyBuilder.toString().trim();
-                keyBuilder.setLength(0);
-            } else if (c == ',' && stack.isEmpty()) {
-                if (currentKey != null) {
-                    Object value = parseValue(valueBuilder.toString().trim());
-                    data.put(currentKey, value);
-                    currentKey = null;
-                    valueBuilder.setLength(0);
-                }
-            } else {
-                if (currentKey != null) {
-                    valueBuilder.append(c);
-                } else {
-                    keyBuilder.append(c);
-                }
-            }
-        }
-
-        if (currentKey != null) {
-            Object value = parseValue(valueBuilder.toString().trim());
-            data.put(currentKey, value);
-        }
-
-        return data;
-    }
-
-    private Object parseValue(String value) {
-        if (value.startsWith("\"") && value.endsWith("\"")) {
-            return value.substring(1, value.length() - 1);
-        } else if (value.equalsIgnoreCase("true") || value.equalsIgnoreCase("false")) {
-            return Boolean.parseBoolean(value);
+    private Object convertJsonNode(JsonNode jsonNode, int indent) {
+        if (jsonNode.isObject()) {
+            Map<String, Object> map = new HashMap<>();
+            jsonNode.fields().forEachRemaining(entry -> map.put(entry.getKey(), convertJsonNode(entry.getValue(), indent)));
+            return map;
+        } else if (jsonNode.isArray()) {
+            List<Object> list = new ArrayList<>();
+            jsonNode.elements().forEachRemaining(element -> list.add(convertJsonNode(element, indent)));
+            return list;
         } else {
-            try {
-                if (value.contains(".")) {
-                    return Double.parseDouble(value);
+            return convertJsonValue(jsonNode, indent);
+        }
+    }
+
+    private Object convertJsonValue(JsonNode jsonNode, int indent) {
+        switch (jsonNode.getNodeType()) {
+            case BOOLEAN:
+                return jsonNode.asBoolean();
+            case NUMBER:
+                if (jsonNode.isFloatingPointNumber()) {
+                    return jsonNode.asDouble();
                 } else {
-                    return Long.parseLong(value);
+                    return jsonNode.asLong();
                 }
-            } catch (NumberFormatException e) {
-                return value;
-            }
+            case STRING:
+                return jsonNode.asText();
+            case NULL:
+            default:
+                return null;
         }
     }
 }
